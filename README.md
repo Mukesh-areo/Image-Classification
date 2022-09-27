@@ -43,8 +43,16 @@ To create the folder structure use the following command
 To connect the local repository with git use 
  ----git init-----
 
-3.To create the Environment 
+3. To create the Environment 
 Use init_setup.sh file
 ----bash init-setup.sh ----
 
-4.
+4. Activate the environment
+---- conda activate ./env-----
+
+5. Then run the Tox
+------tox ----
+or tox --recreate
+
+
+

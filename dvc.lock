@@ -4,14 +4,14 @@ stages:
     cmd: python src/deepClassifier/pipeline/stage_01_data_ingestion.py
     deps:
     - path: configs/config.yaml
-      md5: 7a9e9a054d22e6926a6730ef8d113235
-      size: 829
+      md5: d154a2f83795979d9b46a61f869b59b1
+      size: 789
     - path: src/deepClassifier/Component/data_ingestion.py
-      md5: 48ffe18b031c9ba5fc935c57d8cd4b15
-      size: 1937
+      md5: 4d55f563f463b39155c0076a64c6cdcd
+      size: 1988
     - path: src/deepClassifier/config/Configuration.py
-      md5: 2eccd4176539473ad54b3f8b047f8efb
-      size: 3812
+      md5: b352e343e957e812dd4d3c6b6c9af121
+      size: 3809
     - path: src/deepClassifier/entity/config_entity.py
       md5: 9a0b4af1850a92a5e3e3f6164259d7d1
       size: 1154
@@ -20,20 +20,20 @@ stages:
       size: 706
     outs:
     - path: artifacts/data_ingestion/data.zip
-      md5: e137a4507370d942469b6d267a24ea04
-      size: 824887076
+      md5: 03bebc5d4c26b9382d04e89c943ce5c9
+      size: 1252891
   prepare_base_model:
     cmd: python src/deepClassifier/pipeline/stage_02_prepare_base_model.py
     deps:
     - path: configs/config.yaml
-      md5: 7a9e9a054d22e6926a6730ef8d113235
-      size: 829
+      md5: d154a2f83795979d9b46a61f869b59b1
+      size: 789
     - path: src/deepClassifier/Component/prepare_base_model.py
       md5: 805c4485265c64a85250112999ec45df
       size: 2204
     - path: src/deepClassifier/config/Configuration.py
-      md5: 2eccd4176539473ad54b3f8b047f8efb
-      size: 3812
+      md5: b352e343e957e812dd4d3c6b6c9af121
+      size: 3809
     - path: src/deepClassifier/entity/config_entity.py
       md5: 9a0b4af1850a92a5e3e3f6164259d7d1
       size: 1154
@@ -42,7 +42,7 @@ stages:
       size: 827
     params:
       params.yaml:
-        CLASSES: 2
+        CLASSES: 3
         IMAGE_SIZE:
         - 224
         - 224
@@ -52,8 +52,8 @@ stages:
         WEIGHTS: imagenet
     outs:
     - path: artifacts/prepare_base_model
-      md5: d8cf0eb5aef43a82e806edcf5d98b1b4.dir
-      size: 118053368
+      md5: 29d7ec7b864fb586a5d899a6e2454426.dir
+      size: 118153720
       nfiles: 2
   training:
     cmd: python src/deepClassifier/pipeline/stage_03_training.py
