@@ -30,3 +30,21 @@ MLFLOW_TRACKING_URI=https://dagshub.com/Mukesh-areo/CNN_claasaifier.mlflow \
 MLFLOW_TRACKING_USERNAME=Mukesh-areo \
 MLFLOW_TRACKING_PASSWORD=434cc55976d25211145784e69290bf348ce1e14a \
 python script.py
+
+
+
+# Project setups 
+
+1. command
+To create the folder structure use the following command
+ ----Python template.py----
+
+2. Then connect with the github
+To connect the local repository with git use 
+ ----git init-----
+
+3.To create the Environment 
+Use init_setup.sh file
+----bash init-setup.sh ----
+
+4.

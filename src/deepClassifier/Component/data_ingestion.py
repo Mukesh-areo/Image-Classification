@@ -24,7 +24,7 @@ class DataIngestion:
             logger.info(f"File already exixts of size: {get_size(Path(self.config.local_data_file))}")
 
     def _get_updated_list_of_files(self, list_of_files):
-        return [f for f in list_of_files if f.endswith(".jpg") and ("Cat" in f or "Dog" in f)]
+        return [f for f in list_of_files if f.endswith(".jpg") and ("Sunny Bhaveen Chandra" in f or "Sudhanshu kumar" in f or "Krish Naik" in f)]
 
     def _preprocess(self, zf: ZipFile, f: str, working_dir: str):
         target_filepath = os.path.join(working_dir, f)

@@ -5,7 +5,7 @@ from pathlib import Path
 import logging
 
 logging.basicConfig(level=logging.INFO,format='[%(asctime)s]:%(message)s: ')
-package_name="deepClassifier"                                                    # "deepClassifier" is the name of the package 
+package_name="Image Classification"                                                    # "deepClassifier" is the name of the package 
 
 list_of_files=[                                                                  # list of files that contain the DeepClassifier class
     ".github/workflows/.gitkeep",
