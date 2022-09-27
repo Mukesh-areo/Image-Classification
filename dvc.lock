@@ -1,0 +1,133 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/deepClassifier/pipeline/stage_01_data_ingestion.py
+    deps:
+    - path: configs/config.yaml
+      md5: 7a9e9a054d22e6926a6730ef8d113235
+      size: 829
+    - path: src/deepClassifier/Component/data_ingestion.py
+      md5: 48ffe18b031c9ba5fc935c57d8cd4b15
+      size: 1937
+    - path: src/deepClassifier/config/Configuration.py
+      md5: 2eccd4176539473ad54b3f8b047f8efb
+      size: 3812
+    - path: src/deepClassifier/entity/config_entity.py
+      md5: 9a0b4af1850a92a5e3e3f6164259d7d1
+      size: 1154
+    - path: src/deepClassifier/pipeline/stage_01_data_ingestion.py
+      md5: 4103dcb9520e5b6d29e61a6bd8ba5f70
+      size: 706
+    outs:
+    - path: artifacts/data_ingestion/data.zip
+      md5: e137a4507370d942469b6d267a24ea04
+      size: 824887076
+  prepare_base_model:
+    cmd: python src/deepClassifier/pipeline/stage_02_prepare_base_model.py
+    deps:
+    - path: configs/config.yaml
+      md5: 7a9e9a054d22e6926a6730ef8d113235
+      size: 829
+    - path: src/deepClassifier/Component/prepare_base_model.py
+      md5: 805c4485265c64a85250112999ec45df
+      size: 2204
+    - path: src/deepClassifier/config/Configuration.py
+      md5: 2eccd4176539473ad54b3f8b047f8efb
+      size: 3812
+    - path: src/deepClassifier/entity/config_entity.py
+      md5: 9a0b4af1850a92a5e3e3f6164259d7d1
+      size: 1154
+    - path: src/deepClassifier/pipeline/stage_02_prepare_base_model.py
+      md5: 9401581b719dafec6af8f07faca484ab
+      size: 827
+    params:
+      params.yaml:
+        CLASSES: 2
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+        INCLUDE_TOP: false
+        LEARNING_RATE: 0.01
+        WEIGHTS: imagenet
+    outs:
+    - path: artifacts/prepare_base_model
+      md5: d8cf0eb5aef43a82e806edcf5d98b1b4.dir
+      size: 118053368
+      nfiles: 2
+  training:
+    cmd: python src/deepClassifier/pipeline/stage_03_training.py
+    deps:
+    - path: artifacts/data_ingestion/data.zip
+      md5: e137a4507370d942469b6d267a24ea04
+      size: 824887076
+    - path: artifacts/prepare_base_model
+      md5: d8cf0eb5aef43a82e806edcf5d98b1b4.dir
+      size: 118053368
+      nfiles: 2
+    - path: configs/config.yaml
+      md5: 7a9e9a054d22e6926a6730ef8d113235
+      size: 829
+    - path: src/deepClassifier/Component/prepare_callback.py
+      md5: 09b750dea8e8b3a3831cde5ebc946a76
+      size: 912
+    - path: src/deepClassifier/Component/training.py
+      md5: 9b1ac832369eb36ca71d3002b3ab62e3
+      size: 2622
+    - path: src/deepClassifier/config/Configuration.py
+      md5: 2eccd4176539473ad54b3f8b047f8efb
+      size: 3812
+    - path: src/deepClassifier/entity/config_entity.py
+      md5: 9a0b4af1850a92a5e3e3f6164259d7d1
+      size: 1154
+    - path: src/deepClassifier/pipeline/stage_03_training.py
+      md5: 835e2577464dac5f97f00bcd1c6163ca
+      size: 1030
+    params:
+      params.yaml:
+        AUGMENTATION: true
+        BATCH_SIZE: 16
+        EPOCHS: 1
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+        LEARNING_RATE: 0.01
+    outs:
+    - path: artifacts/prepare_callbacks/checkpoint_dir/model.h5
+      md5: b2505e4af834b1c6dd5ad03cec893201
+      size: 59135136
+    - path: artifacts/prepare_callbacks/tensorboard_log_dir
+      md5: 5bb5b4fc6b8c1f41cbb1c730531416ec.dir
+      size: 75236
+      nfiles: 2
+    - path: artifacts/training/model.h5
+      md5: b2505e4af834b1c6dd5ad03cec893201
+      size: 59135136
+  evaluation:
+    cmd: python src/deepClassifier/pipeline/stage_04_evaluation_stage.py
+    deps:
+    - path: artifacts/data_ingestion/PetImages
+      md5: 3a5cf86541f22c236620ce5b952ad684.dir
+      size: 848866410
+      nfiles: 24998
+    - path: artifacts/training/model.h5
+      md5: b2505e4af834b1c6dd5ad03cec893201
+      size: 59135136
+    - path: configs/config.yaml
+      md5: 7a9e9a054d22e6926a6730ef8d113235
+      size: 829
+    - path: src/deepClassifier/pipeline/stage_04_evaluation_stage.py
+      md5: 6920db4f2699ff8814f58eaf0e3a5458
+      size: 727
+    params:
+      params.yaml:
+        BATCH_SIZE: 16
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+    outs:
+    - path: scores.json
+      md5: 51c2ade3cd63c190b3283dbf24318e77
+      size: 72

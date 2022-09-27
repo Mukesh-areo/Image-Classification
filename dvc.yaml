@@ -1,0 +1,65 @@
+stages:
+  data_ingestion:
+      cmd: python src/deepClassifier/pipeline/stage_01_data_ingestion.py
+      deps: 
+        - src/deepClassifier/pipeline/stage_01_data_ingestion.py
+        - src/deepClassifier/Component/data_ingestion.py
+        - src/deepClassifier/config/Configuration.py
+        - src/deepClassifier/entity/config_entity.py
+        - configs/config.yaml
+      outs:
+        - artifacts/data_ingestion/data.zip
+
+  prepare_base_model:
+      cmd: python src/deepClassifier/pipeline/stage_02_prepare_base_model.py
+      deps: 
+        - src/deepClassifier/pipeline/stage_02_prepare_base_model.py
+        - src/deepClassifier/Component/prepare_base_model.py
+        - src/deepClassifier/config/Configuration.py
+        - src/deepClassifier/entity/config_entity.py
+        - configs/config.yaml
+      params:
+        - IMAGE_SIZE
+        - INCLUDE_TOP
+        - CLASSES
+        - WEIGHTS
+        - LEARNING_RATE
+      outs:
+        - artifacts/prepare_base_model
+
+  training:
+      cmd: python src/deepClassifier/pipeline/stage_03_training.py
+      deps: 
+        - src/deepClassifier/pipeline/stage_03_training.py
+        - src/deepClassifier/config/Configuration.py
+        - src/deepClassifier/entity/config_entity.py
+        - src/deepClassifier/Component/training.py
+        - src/deepClassifier/Component/prepare_callback.py
+        - configs/config.yaml
+        - artifacts/prepare_base_model
+        - artifacts/data_ingestion/data.zip
+      params:
+        - AUGMENTATION
+        - IMAGE_SIZE
+        - BATCH_SIZE
+        - EPOCHS
+        - LEARNING_RATE
+      outs:
+        - artifacts/training/model.h5
+        - artifacts/prepare_callbacks/checkpoint_dir/model.h5
+        - artifacts/prepare_callbacks/tensorboard_log_dir       
+
+
+  evaluation:
+      cmd: python src/deepClassifier/pipeline/stage_04_evaluation_stage.py
+      deps: 
+        - src/deepClassifier/pipeline/stage_04_evaluation_stage.py
+        - configs/config.yaml
+        - artifacts/data_ingestion/PetImages
+        - artifacts/training/model.h5
+      params:
+        - IMAGE_SIZE
+        - BATCH_SIZE
+      metrics:
+      - scores.json:
+          cache: false    
